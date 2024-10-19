@@ -32,7 +32,16 @@ public class Graph {
         return this.aretes.add(arete);
     }
 
+    public boolean ajouterSommet(Sommet sommet) {
+        return this.sommets.add(sommet);
+    }
+
     public Sommet trouveSommetTrivial(int k) {
+
+        if (this.aretes.isEmpty()) {
+            return this.sommets.get(0);
+        }
+
         for (Arete a : this.aretes) {
             Sommet s1 = a.getSommets().get(0);
             Sommet s2 = a.getSommets().get(1);
@@ -42,16 +51,32 @@ public class Graph {
 
             if (nbVoisins1 < k || nbVoisins2 < k) {
                 if (nbVoisins1 < k)
-                {return s1;}
+                {
+                    System.out.println("Sommet trivial trouvé : " + s1.getNom());
+                    return s1;
+                }
                 else
-                {return s2;}
+                {
+                    System.out.println("Sommet trivial trouvé : " + s2.getNom());
+                    return s2;
+                }
             }
         }
 
         return null;
     }
 
+    public Sommet getSommetNonTrivial(int k) {
+        for (Sommet s : this.sommets) {
+            if (s.getnbVoisins() >= k) {
+                return s;
+            }
+        }
+        return null;
+    }
+
     public boolean supprimerSommet(Sommet s) {
+
         // Liste temporaire pour stocker les arêtes à supprimer pour eviter la maudite concurrentModificationException
         ArrayList<Arete> aretesToRemove = new ArrayList<>();
 
@@ -73,8 +98,6 @@ public class Graph {
         // Supprimer le sommet de la liste des sommets
         return this.sommets.remove(s);
     }
-
-
 
 
     @Override

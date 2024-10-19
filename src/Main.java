@@ -22,6 +22,11 @@ public class Main {
         Sommet s;
 
         if (g.getAretes().isEmpty()) {
+            s = g.trouveSommetTrivial(k);
+            if (s != null) {
+                s.setColor(getAvailableColor(s, k));
+            }
+
             return;
         }
 
@@ -30,23 +35,31 @@ public class Main {
         s = g.trouveSommetTrivial(k);
         if (s != null) {
             Graph g2 = new Graph(g);
-            g2.supprimerSommet(s);
+            if(g2.supprimerSommet(s)){
 
-            // on colorie g \ s avec k couleurs
-            coloration(g2, k);
-            // et on colorie s avec une couleur disponible
-            s.setColor(getAvailableColor(s, k));
+                // on colorie g \ s avec k couleurs
+                coloration(g2, k);
+                // et on colorie s avec une couleur disponible
+                s.setColor(getAvailableColor(s, k));
+
+            }
+
         }
 
-        // Sinon, on marque le sommet comme "spilled"
+        // Sinon, on spill un sommet
         else {
-            s = g.getSommets().get(0); // on prend le premier sommet (ou peu importe)
+
+            s = g.getSommetNonTrivial(k); // on prend le premier sommet (ou peu importe)
+
+            if (s.getNom().equals("y")){System.out.println("Sommet choisi pour etre spilled : " + s.getNom() + " nombre de voisins : " + s.getnbVoisins());}
+            if (s.getNom().equals("x")){System.out.println("Sommet choisi pour etre spilled : " + s.getNom() + " nombre de voisins : " + s.getnbVoisins());}
 
             Graph g2 = new Graph(g);
-            g2.supprimerSommet(s);
+            if(g2.supprimerSommet(s)) {
 
-            coloration(g2, k);
-            s.setSpilled(true);
+                coloration(g2, k);
+                s.setSpilled(true);
+            }
 
         }
 
@@ -57,29 +70,47 @@ public class Main {
      */
 
     public static int getAvailableColor(Sommet s, int k) {
-        boolean[] usedColors = new boolean[k + 1]; // Couleurs possibles de 1 à k
+        boolean[] usedColors = new boolean[k + 1]; // Available colors from 1 to k
+        int preferenceColor = -1; // To store the color of a preference neighbor
 
-        // Parcourir les voisins
-
+        // Iterate over neighbors
         for (Sommet voisin : s.getVoisins()) {
-            if (voisin.getColor() != -1) { // Si le voisin a une couleur assignée
-                usedColors[voisin.getColor()] = true;
+            // If the neighbor has a color assigned
+            if (voisin.getColor() != -1) {
+                // Check if this is a preference edge
+                if (isPreferenceEdge(s, voisin)) {
+                    // If it's a preference edge, remember the color
+                    preferenceColor = voisin.getColor();
+                } else {
+                    // Mark the color as used
+                    usedColors[voisin.getColor()] = true;
+                }
             }
         }
 
-        // Trouver la première couleur non utilisée
+        // If there's a preference color, return it if it's available
+        if (preferenceColor != -1 && !usedColors[preferenceColor]) {
+            return preferenceColor;
+        }
 
+        // Find the first available color that is not used
         for (int i = 1; i <= k; i++) {
             if (!usedColors[i]) {
                 return i;
             }
         }
 
-        // Retourne -1 si aucune couleur disponible (cela ne devrait pas arriver en général)
-
+        // Return -1 if no color is available (should not happen under normal conditions)
         return -1;
-
     }
+
+    // Method to check if there's a preference edge between two vertices
+    private static boolean isPreferenceEdge(Sommet s1, Sommet s2) {
+        // Implement logic to determine if s1 and s2 are connected by a preference edge
+        // This could involve checking a specific property of the edge or maintaining a separate list of preference edges
+        return s1.getPreferences().contains(s2); // Example implementation
+    }
+
 
 
     public static void main(String[] args){
@@ -130,6 +161,14 @@ public class Main {
 
             Graph g1 = new Graph();
 
+            g1.ajouterSommet(x);
+            g1.ajouterSommet(y);
+            g1.ajouterSommet(z);
+            g1.ajouterSommet(t);
+            g1.ajouterSommet(u);
+            g1.ajouterSommet(v);
+
+
             g1.ajouterArete(xy);
             g1.ajouterArete(xv);
             g1.ajouterArete(xu);
@@ -144,6 +183,13 @@ public class Main {
 
             try {
                 g1.getAretes().isEmpty();
+            }
+            catch (Exception e){
+                System.out.println("Le graphe est vide");
+            }
+
+            try {
+                g1.getSommets().isEmpty();
             }
             catch (Exception e){
                 System.out.println("Le graphe est vide");

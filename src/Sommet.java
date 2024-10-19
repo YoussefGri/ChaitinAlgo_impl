@@ -3,14 +3,15 @@ import java.util.ArrayList;
 public class Sommet {
     private String nom;
     private ArrayList<Sommet> voisins;
+    private ArrayList<Sommet> preferences;
     private int color = -1;
     private boolean spilled = false;
 
     public Sommet(String nom) {
         this.nom = nom;
         this.voisins = new ArrayList<Sommet>();
+        this.preferences = new ArrayList<Sommet>();
     }
-
 
 
     public String getNom() {
@@ -25,9 +26,19 @@ public class Sommet {
         return this.color;
     }
 
+    public ArrayList<Sommet> getPreferences() {
+        return this.preferences;
+    }
+
     public boolean setVoisin(Sommet voisin) {
         return this.voisins.add(voisin);
     }
+
+    // Method to add a preference edge
+    public void setPreference(Sommet voisin) {
+        this.preferences.add(voisin);
+    }
+
 
     public boolean removeVoisin(Sommet voisin) {
         return this.voisins.remove(voisin);
