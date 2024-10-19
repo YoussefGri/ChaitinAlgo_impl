@@ -56,7 +56,7 @@ public class Graph {
 
     public boolean supprimerSommet(Sommet s) {
 
-        // Liste temporaire pour stocker les arêtes à supprimer pour eviter la maudite concurrentModificationException
+        // Liste temporaire pour stocker les arêtes à supprimer pour eviter la maudite ConcurrentModificationException
         ArrayList<Arete> aretesToRemove = new ArrayList<>();
 
         // Rassembler les arêtes qui impliquent le sommet 's'
@@ -66,7 +66,6 @@ public class Graph {
             }
         }
 
-        // Supprimer les arêtes de la liste principale
         this.aretes.removeAll(aretesToRemove);
 
         // Supprimer le sommet des listes de voisins de ses voisins
@@ -78,7 +77,6 @@ public class Graph {
             }
         }
 
-        // Supprimer le sommet de la liste des sommets
         return this.sommets.remove(s);
     }
 

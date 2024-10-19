@@ -150,30 +150,31 @@ public class Main {
      */
 
     public static int getAvailableColor(Sommet s, int k) {
-        boolean[] usedColors = new boolean[k + 1]; // Available colors from 1 to k
-        int preferenceColor = -1; // To store the color of a preference neighbor
+        boolean[] usedColors = new boolean[k + 1]; // de 1 à k
+        int preferenceColor = -1; // stockera la couleur du voisin pref
 
-        // Iterate over neighbors
         for (Sommet voisin : s.getVoisins()) {
-            // If the neighbor has a color assigned
+
             if (voisin.getColor() != -1) {
-                // Check if this is a preference edge
+
                 if (isPreferenceEdge(s, voisin)) {
-                    // If it's a preference edge, remember the color
+
                     preferenceColor = voisin.getColor();
+
                 } else {
-                    // Mark the color as used
+                    // Marquer la couleur comme utilisée
                     usedColors[voisin.getColor()] = true;
                 }
             }
         }
 
-        // If there's a preference color, return it if it's available
+        // si la couleur est disponible on la retourne
         if (preferenceColor != -1 && !usedColors[preferenceColor]) {
             return preferenceColor;
         }
 
-        // Find the first available color that is not used
+        // sinon on va chercher la première couleur disponible
+
         for (int i = 1; i <= k; i++) {
             if (!usedColors[i]) {
                 return i;
@@ -185,10 +186,11 @@ public class Main {
         return -1;
     }
 
-    // Method to check if there's a preference edge between two vertices
+    /**
+     *     on verifie si on a une arete de preference entre s1 et s2
+     */
+
     private static boolean isPreferenceEdge(Sommet s1, Sommet s2) {
-        // Implement logic to determine if s1 and s2 are connected by a preference edge
-        // This could involve checking a specific property of the edge or maintaining a separate list of preference edges
         return s1.getPreferences().contains(s2); // Example implementation
     }
 
