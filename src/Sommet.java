@@ -45,7 +45,7 @@ public class Sommet {
     }
 
     public int getnbVoisins() {
-        return this.voisins.size();
+        return (this.voisins.size() - this.preferences.size());
     }
 
     public void setColor(int color) {
@@ -56,7 +56,6 @@ public class Sommet {
     public void setSpilled(boolean spilled) {
         this.spilled = spilled;
     }
-
 
 
     public String toString() {

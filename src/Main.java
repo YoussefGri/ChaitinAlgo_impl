@@ -49,10 +49,12 @@ public class Main {
         // Sinon, on spill un sommet
         else {
 
+            System.out.println("----  Sommet trivial non trouvé  ---  ");
+            System.out.println(g.toString());
+
             s = g.getSommetNonTrivial(k); // on prend le premier sommet (ou peu importe)
 
-            if (s.getNom().equals("y")){System.out.println("Sommet choisi pour etre spilled : " + s.getNom() + " nombre de voisins : " + s.getnbVoisins());}
-            if (s.getNom().equals("x")){System.out.println("Sommet choisi pour etre spilled : " + s.getNom() + " nombre de voisins : " + s.getnbVoisins());}
+            System.out.println("----  Sommet choisi : " + s.getNom() + "  ---  ");
 
             Graph g2 = new Graph(g);
             if(g2.supprimerSommet(s)) {
