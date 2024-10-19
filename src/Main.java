@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -15,7 +16,7 @@ public class Main {
      *   choisir un sommet s et colorer g \ s avec nbCouleurs couleurs
      *   spiller s
      */
-
+/*
     public static void coloration(Graph g, int nbCouleurs) {
 
         int k = nbCouleurs;
@@ -71,6 +72,77 @@ public class Main {
 
         }
 
+    }
+
+ */
+
+    public static void coloration(Graph g, int nbCouleurs) {
+        int k = nbCouleurs;
+        Sommet s;
+
+        if (k == 0) {
+            for (Sommet sommet : g.getSommets()) {
+                sommet.setSpilled(true);
+            }
+            return;
+        }
+
+        if (g.getSommets().size() == 1) {
+            s = g.getSommets().get(0);
+            if (s != null) {
+                s.setColor(getAvailableColor(s, k));
+                System.out.println("Sommet traité (dernier sommet): " + s.getNom());
+            }
+            return;
+        }
+
+        // si on trouve un sommet trivial
+        s = g.trouveSommetTrivial(k);
+        if (s != null) {
+            System.out.println("Sommet traité (trivial): " + s.getNom());
+            Graph g2 = new Graph(g);
+            if (g2.supprimerSommet(s)) {
+                // on colorie g \ s avec k couleurs
+                coloration(g2, k);
+                // et on colorie s avec une couleur disponible
+                s.setColor(getAvailableColor(s, k));
+            }
+        } else {
+            // Sinon, on spill potentiellement un sommet non trivial
+            s = g.getSommetNonTrivial(k);
+            System.out.println("Sommet traité (non trivial) : " + s.getNom());
+
+            Graph g2 = new Graph(g);
+            if (g2.supprimerSommet(s)) {
+                coloration(g2, k);
+
+                // Phase de remontée : on essaie de colorier s
+                int distinctNeighborColors = getDistinctNeighborColors(s);
+                if (distinctNeighborColors < k) {
+                    // Il y a moins de k couleurs distinctes chez les voisins de s, on peut colorier s
+                    s.setColor(getAvailableColor(s, k));
+                    System.out.println("Sommet colorié après remontée: " + s.getNom());
+                } else {
+                    // Sinon, on spill le sommet
+                    s.setSpilled(true);
+                    System.out.println("Sommet spillé après remontée: " + s.getNom());
+                }
+            }
+        }
+    }
+
+    /**
+     * Compte le nombre de couleurs distinctes utilisées par les voisins d'un sommet.
+     */
+    public static int getDistinctNeighborColors(Sommet s) {
+        ArrayList<Integer> distinctColors = new ArrayList<>();
+        for (Sommet voisin : s.getVoisins()) {
+            int color = voisin.getColor();
+            if (color != -1 && !distinctColors.contains(color)) {
+                distinctColors.add(color);
+            }
+        }
+        return distinctColors.size();
     }
 
     /**
@@ -229,11 +301,19 @@ public class Main {
 
         Graph g2 = new Graph();
 
+        g2.ajouterSommet(x);
+        g2.ajouterSommet(y);
+
+        g2.ajouterSommet(z);
+        g2.ajouterSommet(t);
+
         g2.ajouterArete(xy);
         g2.ajouterArete(xz);
 
         g2.ajouterArete(yt);
         g2.ajouterArete(zt);
+
+
 
         coloration(g2, nbCouleurs);
 

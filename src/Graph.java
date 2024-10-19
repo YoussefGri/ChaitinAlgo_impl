@@ -45,40 +45,6 @@ public class Graph {
         return null;
     }
 
-/*
-    public Sommet trouveSommetTrivial(int k) {
-
-
-        if (this.aretes.isEmpty()) {
-            return this.sommets.get(0);
-        }
-
-        for (Arete a : this.aretes) {
-            Sommet s1 = a.getSommets().get(0);
-            Sommet s2 = a.getSommets().get(1);
-
-            int nbVoisins1 = s1.getnbVoisins();
-            int nbVoisins2 = s2.getnbVoisins();
-
-            if (nbVoisins1 < k || nbVoisins2 < k) {
-                if (nbVoisins1 < k)
-                {
-                    System.out.println("Sommet trivial trouvé : " + s1.getNom());
-                    return s1;
-                }
-                else
-                {
-                    System.out.println("Sommet trivial trouvé : " + s2.getNom());
-                    return s2;
-                }
-            }
-        }
-
-        return null;
-    }
-
- */
-
     public Sommet getSommetNonTrivial(int k) {
         for (Sommet s : this.sommets) {
             if (s.getnbVoisins() >= k) {
