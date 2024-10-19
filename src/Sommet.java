@@ -11,9 +11,7 @@ public class Sommet {
         this.voisins = new ArrayList<Sommet>();
     }
 
-    public void ajouterVoisin(Sommet voisin) {
-        this.voisins.add(voisin);
-    }
+
 
     public String getNom() {
         return this.nom;
@@ -23,7 +21,19 @@ public class Sommet {
         return this.voisins;
     }
 
-    public int nbVoisins() {
+    public int getColor() {
+        return this.color;
+    }
+
+    public boolean setVoisin(Sommet voisin) {
+        return this.voisins.add(voisin);
+    }
+
+    public boolean removeVoisin(Sommet voisin) {
+        return this.voisins.remove(voisin);
+    }
+
+    public int getnbVoisins() {
         return this.voisins.size();
     }
 
@@ -31,17 +41,12 @@ public class Sommet {
         this.color = color;
     }
 
-    public int getColor() {
-        return this.color;
-    }
 
     public void setSpilled(boolean spilled) {
         this.spilled = spilled;
     }
 
-    public boolean isSpilled() {
-        return this.spilled;
-    }
+
 
     public String toString() {
         if (!this.spilled) {

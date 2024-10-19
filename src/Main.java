@@ -17,64 +17,50 @@ public class Main {
      */
 
     public static void coloration(Graph g, int nbCouleurs) {
-        int k = nbCouleurs;
 
-        Sommet s = null;
-        boolean trivial = false;
+        int k = nbCouleurs;
+        Sommet s;
 
         if (g.getAretes().isEmpty()) {
             return;
         }
 
-        // Étape 1 : Trouver un sommet trivial avec moins de k voisins
-        for (Arete a : g.getAretes()) {
-            if (a.getSommet1().nbVoisins() < k || a.getSommet2().nbVoisins() < k) {
-                trivial = true;
-                if (a.getSommet1().nbVoisins() < k) {
-                    s = a.getSommet1();
-                } else {
-                    s = a.getSommet2();
-                }
-                break;
-            }
-        }
+        // si on trouve un sommet trivial
 
-        // Étape 2 : Si un sommet trivial est trouvé, on le retire et on appelle la coloration récursivement
-        if (trivial) {
-            Graph g2 = new Graph();
-            for (Arete a : g.getAretes()) {
-                if (a.getSommet1() != s && a.getSommet2() != s) {
-                    g2.ajouterArete(a);
-                }
-            }
-            // Assigner une couleur disponible à s
-            s.setColor(getAvailableColor(s, k));
+        s = g.trouveSommetTrivial(k);
+        if (s != null) {
+            Graph g2 = new Graph(g);
+            g2.supprimerSommet(s);
 
+            // on colorie g \ s avec k couleurs
             coloration(g2, k);
-
-
+            // et on colorie s avec une couleur disponible
+            s.setColor(getAvailableColor(s, k));
         }
+
         // Sinon, on marque le sommet comme "spilled"
         else {
-            s = g.getAretes().get(0).getSommet1();
-            Graph g2 = new Graph();
-            for (Arete a : g.getAretes()) {
-                if (a.getSommet1() != s && a.getSommet2() != s) {
-                    g2.ajouterArete(a);
-                }
-            }
-            s.setSpilled(true);
+            s = g.getSommets().get(0); // on prend le premier sommet (ou peu importe)
+
+            Graph g2 = new Graph(g);
+            g2.supprimerSommet(s);
+
             coloration(g2, k);
+            s.setSpilled(true);
+
         }
+
     }
 
     /**
      * Trouve la première couleur disponible pour un sommet donné en fonction de ses voisins.
      */
+
     public static int getAvailableColor(Sommet s, int k) {
         boolean[] usedColors = new boolean[k + 1]; // Couleurs possibles de 1 à k
 
-        // Parcourir les voisins pour marquer les couleurs déjà utilisées
+        // Parcourir les voisins
+
         for (Sommet voisin : s.getVoisins()) {
             if (voisin.getColor() != -1) { // Si le voisin a une couleur assignée
                 usedColors[voisin.getColor()] = true;
@@ -82,6 +68,7 @@ public class Main {
         }
 
         // Trouver la première couleur non utilisée
+
         for (int i = 1; i <= k; i++) {
             if (!usedColors[i]) {
                 return i;
@@ -89,7 +76,9 @@ public class Main {
         }
 
         // Retourne -1 si aucune couleur disponible (cela ne devrait pas arriver en général)
+
         return -1;
+
     }
 
 

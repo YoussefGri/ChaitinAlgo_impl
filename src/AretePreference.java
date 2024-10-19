@@ -6,6 +6,6 @@ public class AretePreference extends Arete {
 
     @Override
     public String toString() {
-        return this.getSommet1().getNom() + " ---pref--> " + this.getSommet2().getNom();
+        return this.getSommets().get(0).toString() + " ---pref--> " + this.getSommets().get(1).toString();
     }
 }

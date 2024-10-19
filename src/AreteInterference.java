@@ -6,6 +6,6 @@ public class AreteInterference extends Arete {
 
     @Override
     public String toString() {
-        return this.getSommet1().toString() + " ---interf--> " + this.getSommet2().toString();
+        return this.getSommets().get(0).toString() + " ---interf--> " + this.getSommets().get(1).toString();
     }
 }
