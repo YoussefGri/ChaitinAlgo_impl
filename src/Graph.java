@@ -37,6 +37,17 @@ public class Graph {
     }
 
     public Sommet trouveSommetTrivial(int k) {
+        for (Sommet s : this.sommets) {
+            if (s.getnbVoisins() < k) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+/*
+    public Sommet trouveSommetTrivial(int k) {
+
 
         if (this.aretes.isEmpty()) {
             return this.sommets.get(0);
@@ -66,6 +77,8 @@ public class Graph {
         return null;
     }
 
+ */
+
     public Sommet getSommetNonTrivial(int k) {
         for (Sommet s : this.sommets) {
             if (s.getnbVoisins() >= k) {
@@ -93,6 +106,10 @@ public class Graph {
         // Supprimer le sommet des listes de voisins de ses voisins
         for (Sommet s2 : s.getVoisins()) {
             s2.removeVoisin(s);
+
+            if (s2.getPreferences().contains(s)) {
+                s2.getPreferences().remove(s);
+            }
         }
 
         // Supprimer le sommet de la liste des sommets

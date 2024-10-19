@@ -21,10 +21,18 @@ public class Main {
         int k = nbCouleurs;
         Sommet s;
 
-        if (g.getAretes().isEmpty()) {
-            s = g.trouveSommetTrivial(k);
+        if(k==0){
+            for (Sommet sommet : g.getSommets()){
+                sommet.setSpilled(true);
+            }
+            return;
+        }
+
+        if (g.getSommets().size() == 1) {
+            s = g.getSommets().get(0);
             if (s != null) {
                 s.setColor(getAvailableColor(s, k));
+                System.out.println("Sommet traité (dernier sommet): " + s.getNom());
             }
 
             return;
@@ -34,6 +42,7 @@ public class Main {
 
         s = g.trouveSommetTrivial(k);
         if (s != null) {
+            System.out.println("Sommet traité (trivial): " + s.getNom());
             Graph g2 = new Graph(g);
             if(g2.supprimerSommet(s)){
 
@@ -49,12 +58,9 @@ public class Main {
         // Sinon, on spill un sommet
         else {
 
-            System.out.println("----  Sommet trivial non trouvé  ---  ");
-            System.out.println(g.toString());
+            s = g.getSommetNonTrivial(k);
 
-            s = g.getSommetNonTrivial(k); // on prend le premier sommet (ou peu importe)
-
-            System.out.println("----  Sommet choisi : " + s.getNom() + "  ---  ");
+            System.out.println("Sommet traité(non trivial) : " + s.getNom());
 
             Graph g2 = new Graph(g);
             if(g2.supprimerSommet(s)) {
@@ -103,6 +109,7 @@ public class Main {
         }
 
         // Return -1 if no color is available (should not happen under normal conditions)
+        System.out.println("No color available for sommet " + s.getNom());
         return -1;
     }
 
