@@ -1,3 +1,10 @@
+/**
+ * HAI705I - TP - Coloration de graphe
+ * Authors:
+ * - Youssef GRARI (22015973)
+ * - Fadel BENOMAR (ELMY03039309)
+ */
+
 import java.util.ArrayList;
 
 public class Graph {

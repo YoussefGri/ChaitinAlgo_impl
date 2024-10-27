@@ -1,3 +1,11 @@
+/**
+ * HAI705I - TP - Coloration de graphe
+ * Authors:
+ * - Youssef GRARI (22015973)
+ * - Fadel BENOMAR (ELMY03039309)
+ */
+
+
 public class AreteInterference extends Arete {
 
     public AreteInterference(Sommet sommet1, Sommet sommet2) {
